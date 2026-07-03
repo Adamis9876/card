@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adam Hirsch - Card</title>
+    <title>Adam Hirsch - VCard</title>
     <style>
         * {
             box-sizing: border-box;
@@ -11,26 +11,26 @@
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
-
         body {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
+            min-height: 100dvh; /* ← dynamic viewport = smoother on mobile UI hide/show */
             color: #ffffff;
             padding: 20px;
             overflow-x: hidden;
             position: relative;
         }
-
-        /* Background layer - starts black, then fades in image */
+        /* Background layer */
         #bg-layer {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
+            width: 100vw;
+            width: 100dvw;
+            height: 100vh;
+            height: 100dvh; /* ← this is the key fix */
             background-color: #000000;
             background-size: cover;
             background-position: center;
@@ -38,16 +38,18 @@
             z-index: -1;
             opacity: 0;
             transition: opacity 1.4s ease;
+
+            /* Helps mobile browsers composite the background more smoothly during resize */
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            will-change: transform, opacity;
         }
 
-        /* Subtle dark overlay on top of background */
+        /* Subtle dark overlay */
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             background: rgba(0, 0, 0, 0.30);
             z-index: 0;
             pointer-events: none;
@@ -65,7 +67,6 @@
             animation: slideIntoPlace 1.0s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
             opacity: 0;
         }
-
         @keyframes slideIntoPlace {
             from {
                 transform: translateY(-130px) scale(0.8);
@@ -76,15 +77,13 @@
                 opacity: 1;
             }
         }
-
         .profile-container img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-
         .card {
-            background-color: #161616; 
+            background-color: #161616;
             width: 100%;
             max-width: 550px;
             border-radius: 40px;
@@ -92,16 +91,14 @@
             text-align: center;
             box-shadow: 0 15px 40px rgba(0,0,0,0.6);
             z-index: 10;
-            border: 1px solid #222222; 
+            border: 1px solid #222222;
             position: relative;
         }
-
         h1 {
             font-size: 2rem;
             font-weight: 700;
             margin-bottom: 15px;
         }
-
         .divider {
             width: 130px;
             height: 4px;
@@ -109,12 +106,10 @@
             margin: 0 auto 35px auto;
             border-radius: 2px;
         }
-
         .contact-list {
             list-style: none;
             margin-bottom: 40px;
         }
-
         .contact-item {
             display: flex;
             align-items: center;
@@ -126,24 +121,20 @@
             text-decoration: none;
             transition: opacity 0.2s;
         }
-
         .contact-item:hover {
             opacity: 0.8;
         }
-
         .contact-item svg {
             width: 24px;
             height: 24px;
             fill: currentColor;
         }
-
         .payment-grid {
             display: flex;
             justify-content: center;
             gap: 30px;
             margin-bottom: 40px;
         }
-
         .payment-method {
             display: flex;
             flex-direction: column;
@@ -155,11 +146,9 @@
             opacity: 0.9;
             transition: transform 0.2s;
         }
-
         .payment-method:hover {
             transform: translateY(-2px);
         }
-
         .payment-icon {
             width: 45px;
             height: 45px;
@@ -169,19 +158,17 @@
             place-items: center;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
-        
+       
         .payment-icon img {
             width: 26px;
             height: 26px;
             object-fit: contain;
         }
-
         .footer-note {
             font-size: 1.1rem;
             margin-bottom: 20px;
             opacity: 0.95;
         }
-
         .footer-highlight {
             font-size: 1.3rem;
             font-weight: 700;
@@ -189,18 +176,14 @@
     </style>
 </head>
 <body>
-
     <!-- Background Layer -->
     <div id="bg-layer"></div>
-
     <div class="profile-container">
         <img src="https://firebasestorage.googleapis.com/v0/b/sitch-app.appspot.com/o/userFiles%2FJFoKy7YPgtRQvwWLzXGaJyRwtPR2%2FC8oxNrFc6r7UlZ313Jnu%2Fsmall_eSJBZayeN9gqB6tx8cge.webp?alt=media&amp;token=12c73b24-20d5-4fea-848f-bdd01109e5f7" alt="Adam Hirsch">
     </div>
-
     <div class="card">
         <h1>Adam Hirsch</h1>
         <div class="divider"></div>
-
         <div class="contact-list">
             <a href="#" class="contact-item" onclick="addToContacts(event)">
                 <svg viewBox="0 0 24 24"><path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
@@ -211,7 +194,6 @@
                 <span>(206) 910–0010</span>
             </a>
         </div>
-
         <div class="payment-grid">
             <a href="https://cash.app/$Adanius" target="_blank" class="payment-method cashapp">
                 <div class="payment-icon">
@@ -232,7 +214,6 @@
                 <span>PayPal</span>
             </a>
         </div>
-
         <p class="footer-note">Thanks for helping me pay for school 😁</p>
         <p class="footer-highlight">Enjoy your cruise!</p>
     </div>
@@ -245,16 +226,12 @@
             'https://lh3.googleusercontent.com/pw/AP1GczPoOcAt_0BkHj3zzo4SiDES3sARR4hPaeIkRxXMg6mP7rRBs0Z0_MWiFwGOPQl9wcA92e5o5gy1cg0VVMtYGMIxnsC05OomejWs6NlmVThrokQ_uF2g=w2400'
         ];
 
-        // Pick random background
         const randomIndex = Math.floor(Math.random() * backgrounds.length);
         const chosenBackground = backgrounds[randomIndex];
-
         const bgLayer = document.getElementById('bg-layer');
 
-        // Set the image
         bgLayer.style.backgroundImage = `url('${chosenBackground}')`;
 
-        // Fade in
         setTimeout(() => {
             bgLayer.style.opacity = '1';
         }, 80);
