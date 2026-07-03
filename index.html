@@ -17,12 +17,13 @@
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            min-height: 100dvh; /* ← dynamic viewport = smoother on mobile UI hide/show */
+            min-height: 100dvh;
             color: #ffffff;
             padding: 20px;
             overflow-x: hidden;
             position: relative;
         }
+
         /* Background layer */
         #bg-layer {
             position: fixed;
@@ -30,7 +31,7 @@
             width: 100vw;
             width: 100dvw;
             height: 100vh;
-            height: 100dvh; /* ← this is the key fix */
+            height: 100dvh;
             background-color: #000000;
             background-size: cover;
             background-position: center;
@@ -39,7 +40,6 @@
             opacity: 0;
             transition: opacity 1.4s ease;
 
-            /* Helps mobile browsers composite the background more smoothly during resize */
             transform: translateZ(0);
             -webkit-transform: translateZ(0);
             will-change: transform, opacity;
