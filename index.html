@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adam Hirsch - Links</title>
+    <title>Adam Hirsch - Card</title>
     <style>
         * {
             box-sizing: border-box;
@@ -13,7 +13,6 @@
         }
 
         body {
-            background-color: #161616;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -21,6 +20,37 @@
             min-height: 100vh;
             color: #ffffff;
             padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Background layer - starts black, then fades in image */
+        #bg-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000000;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 1.4s ease;
+        }
+
+        /* Subtle dark overlay on top of background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.30);
+            z-index: 0;
+            pointer-events: none;
         }
 
         .profile-container {
@@ -28,10 +58,10 @@
             height: 180px;
             border-radius: 50%;
             overflow: hidden;
-            border: 4px solid #282828;
+            border: 4px solid #161616;
             margin-bottom: -90px;
-            z-index: 2;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            z-index: 20;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.8);
             animation: slideIntoPlace 1.0s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
             opacity: 0;
         }
@@ -54,14 +84,16 @@
         }
 
         .card {
-            background-color: #242424;
+            background-color: #161616; 
             width: 100%;
             max-width: 550px;
             border-radius: 40px;
             padding: 110px 40px 40px 40px;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            z-index: 1;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            z-index: 10;
+            border: 1px solid #222222; 
+            position: relative;
         }
 
         h1 {
@@ -132,36 +164,17 @@
             width: 45px;
             height: 45px;
             background-color: #ffffff;
-            color: #242424;
             border-radius: 8px;
             display: grid;
             place-items: center;
-            font-weight: 900;
-            font-size: 1.6rem;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
-
-        .payment-method.venmo .payment-icon {
-            color: #3D95CE;
-            font-family: Georgia, serif;
-            font-style: italic;
-            font-weight: 900;
-            font-size: 1.75rem;
+        
+        .payment-icon img {
+            width: 26px;
+            height: 26px;
+            object-fit: contain;
         }
-
-        .payment-method.paypal .payment-icon {
-            color: #003087;
-            font-family: Georgia, serif;
-            font-style: italic;
-            font-weight: 900;
-            font-size: 1.75rem;
-        }
-
-        .payment-method.cashapp .payment-icon {
-            color: #00C853;
-            font-size: 1.85rem;
-        }
-
 
         .footer-note {
             font-size: 1.1rem;
@@ -177,6 +190,8 @@
 </head>
 <body>
 
+    <!-- Background Layer -->
+    <div id="bg-layer"></div>
 
     <div class="profile-container">
         <img src="https://firebasestorage.googleapis.com/v0/b/sitch-app.appspot.com/o/userFiles%2FJFoKy7YPgtRQvwWLzXGaJyRwtPR2%2FC8oxNrFc6r7UlZ313Jnu%2Fsmall_eSJBZayeN9gqB6tx8cge.webp?alt=media&amp;token=12c73b24-20d5-4fea-848f-bdd01109e5f7" alt="Adam Hirsch">
@@ -185,7 +200,6 @@
     <div class="card">
         <h1>Adam Hirsch</h1>
         <div class="divider"></div>
-
 
         <div class="contact-list">
             <a href="#" class="contact-item" onclick="addToContacts(event)">
@@ -198,18 +212,23 @@
             </a>
         </div>
 
-
         <div class="payment-grid">
             <a href="https://cash.app/$Adanius" target="_blank" class="payment-method cashapp">
-                <div class="payment-icon">$</div>
+                <div class="payment-icon">
+                    <img src="https://api.iconify.design/simple-icons:cashapp.svg?color=%2300C853" alt="Cash App Logo">
+                </div>
                 <span>Cash App</span>
             </a>
             <a href="https://venmo.com/u/Adamis9876" target="_blank" class="payment-method venmo">
-                <div class="payment-icon">V</div>
+                <div class="payment-icon">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPgoJPHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIgLz4KCTxwYXRoIGZpbGw9IiMyNTk0ZmYiIGQ9Ik0xNCAzLjI3YTcuNSA3LjUgMCAwIDEgLjY2IDMuMzVjMCAyLjcyLTEuOTMgNi43Mi0zLjQ5IDkuMjdMOS41MyAyLjQ0bC02LjkxLjY1TDUuNzkgMjJoNy44OGMzLjQ1LTQuNTQgNy43MS0xMSA3LjcxLTE2YTcuMyA3LjMgMCAwIDAtMS4wNi00eiIgLz4KPC9zdmc+Cg==" alt="Venmo V Logo">
+                </div>
                 <span>Venmo</span>
             </a>
             <a href="https://paypal.me/Adamis9876" target="_blank" class="payment-method paypal">
-                <div class="payment-icon">P</div>
+                <div class="payment-icon">
+                    <img src="https://api.iconify.design/fa6-brands:paypal.svg?color=%23003087" alt="PayPal Logo">
+                </div>
                 <span>PayPal</span>
             </a>
         </div>
@@ -219,6 +238,29 @@
     </div>
 
     <script>
+        const backgrounds = [
+            'https://lh3.googleusercontent.com/pw/AP1GczNzZ6dnzfRvGWdqVR144KQprn96XcSndmHYI-4YVBqr6fQHjv1zbDjI0Xjs-jctgmb49IW-gfmmfQGrlrf72McclYhY16_zzeb3UrsNR_z-Xm2c0A32=w2400',
+            'https://lh3.googleusercontent.com/pw/AP1GczPS_ndCrKS-AYGyM0fcC-4wEpuXaGaGo21WkCDXQpS_jauuyiFW9NY0XrfJEtqVq7eXuxmGzzZUVcQbyZU7uTEH4o7IVFILW-Z-BApsu5IpxZI345Oe=w2400',
+            'https://lh3.googleusercontent.com/pw/AP1GczN4nRDN5Zs3FGiYt0lRlSZECMTRJ6UUzm8877gV5IT307pP62lYPXyXTz6Fp27kmHm3EWu5HKuoZ_gTqUE_XzAqph1Q2vI8tMXsCH4-gs2bR5MpkZ-5=w2400',
+            'https://lh3.googleusercontent.com/pw/AP1GczPoOcAt_0BkHj3zzo4SiDES3sARR4hPaeIkRxXMg6mP7rRBs0Z0_MWiFwGOPQl9wcA92e5o5gy1cg0VVMtYGMIxnsC05OomejWs6NlmVThrokQ_uF2g=w2400'
+        ];
+
+        // Pick random background
+        const randomIndex = Math.floor(Math.random() * backgrounds.length);
+        const chosenBackground = backgrounds[randomIndex];
+
+        const bgLayer = document.getElementById('bg-layer');
+
+        // Set the image
+        bgLayer.style.backgroundImage = `url('${chosenBackground}')`;
+
+        // Fade in from black
+        setTimeout(() => {
+            bgLayer.style.opacity = '1';
+        }, 80);
+    </script>
+
+    <script>
         function addToContacts(e) {
             e.preventDefault();
             const vcard = `BEGIN:VCARD
@@ -226,6 +268,8 @@ VERSION:3.0
 FN:Adam Hirsch
 ORG:Alaska Coach Tours
 TEL;TYPE=CELL:(206) 910-0010
+WEB:adamhir.com
+EMAIL:adamishirsch@gmail.com
 END:VCARD`;
             const blob = new Blob([vcard], {type: 'text/vcard'});
             const url = URL.createObjectURL(blob);
