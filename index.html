@@ -281,19 +281,19 @@ END:VCARD`;
         }
     </script>
 
-<script>
+<script src="https://cdn.jsdelivr.net/npm/counterapi/dist/counter.browser.min.js"></script>
+    
+    <script>
         document.addEventListener("DOMContentLoaded", () => {
             const hasVisited = localStorage.getItem('hasVisitedVCard');
             const counterElement = document.getElementById('view-count');
             
-            const namespace = 'adamhir-com';
-            const key = 'sitch-app-vcard';
+            const counter = new Counter({ workspace: 'adamhir-com' });
 
             if (!hasVisited) {
-                fetch(`https://api.counterapi.dev/v1/${namespace}/${key}/up`)
-                    .then(response => response.json())
-                    .then(data => {
-                        counterElement.innerText = data.count;
+                counter.up('sitch-app-vcard')
+                    .then(result => {
+                        counterElement.innerText = result.data.up_count;
                         localStorage.setItem('hasVisitedVCard', 'true');
                     })
                     .catch(error => {
@@ -301,10 +301,9 @@ END:VCARD`;
                         counterElement.innerText = "-";
                     });
             } else {
-                fetch(`https://api.counterapi.dev/v1/${namespace}/${key}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        counterElement.innerText = data.count;
+                counter.get('sitch-app-vcard')
+                    .then(result => {
+                        counterElement.innerText = result.data.up_count;
                     })
                     .catch(error => {
                         console.error('Counter error:', error);
